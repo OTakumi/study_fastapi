@@ -2,6 +2,8 @@ version: "3.9"
 services:
   api:
     build: ./dockerfiles/python
+    depends_on:
+      - db
     ports:
       - "8000:5000"
     volumes:
@@ -19,8 +21,11 @@ services:
       - 5432:5432
     volumes:
       - db-store:/var/lib/postgresql/data
+    restart: always
     environment:
-      - POSTGRES_PASSWORD=passw0rd
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: passw0rd
+      POSTGRES_DB: $api_development
 
 volumes:
   db-store:
