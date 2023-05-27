@@ -8,5 +8,19 @@ services:
       - .:/code
     environment:
       FLASK_ENV: development
+
   redis:
     image: "redis:alpine"
+
+  db:
+    image: postgres:15.3
+    container_name: postgres_15
+    ports:
+      - 5432:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=passw0rd
+
+volumes:
+  db-store:
