@@ -6,7 +6,19 @@ services:
       - db
     volumes:
       - .:/code
-    command: uvicorn src.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    command: >
+      uvicorn src.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+
+  unit_test:
+    build: ./dockerfiles/python
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+    command: >
+      python test_discover.py
     ports:
       - "8000:8000"
 

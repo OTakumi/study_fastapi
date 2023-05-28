@@ -1,6 +1,10 @@
 from typing import Union
 from fastapi import FastAPI
 import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.schema import Column
+from sqlalchemy.types import Integer, String
 
 import datetime
 from dotenv import load_dotenv
@@ -9,11 +13,13 @@ app = FastAPI()
 load_dotenv()
 
 # DBの情報は環境変数から取得する
-engine = sqlalchemy.create_engine("postgresql://" \
+engine = create_engine("postgresql://" \
         + 'POSTGRES_USER' \
         + ":" \
         + 'POSTGRES_PASSWORD' \
         + "@localhost/db")
+
+Base = declarative_base()
 
 @app.get("/")
 def read_root():
