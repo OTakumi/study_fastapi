@@ -2,14 +2,16 @@
 FROM python:3.11-alpine
 
 WORKDIR /code
-ENV FLASK_APP=src/main.py
-ENV FLASK_RUN_HOST=0.0.0.0
 
-RUN apk add --no-cache gcc musl-dev linux-headers
 COPY requirements.txt requirements.txt
 
-RUN pip install -r requirements.txt
+RUN set -eux \
+    && apk add --no-cache build-base \
+    && pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir --upgrade -r requirements.txt \
+    && pip install uvicorn[standard] \
+    && apk del build-base
+    
 EXPOSE 5000
 
-COPY . .
-CMD ["flask", "run"]
+COPY . ./code

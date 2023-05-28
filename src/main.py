@@ -1,23 +1,19 @@
-import time
+from typing import Union
+from fastapi import FastAPI
 
-import redis
-from flask import Flask
+import datetime
 
-app = Flask(__name__)
-cache = redis.Redis(host='redis', port='6379')
+app = FastAPI()
 
-def get_hit_count():
-    retries = 5
-    while True:
-        try:
-            return cache.incr('hits')
-        except redis.exceptions.ConnectionError as exc:
-            if retries == 0:
-                raise exc
-            retries -= 1
-            time.sleep(0.5)
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
-@app.route('/')
-def hello():
-    count = get_hit_count()
-    return 'Hello World! I have been seen {} times.\n'.format(count)
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
+
+@app.get("/now")
+def read_datetime_now():
+    dt_now = datetime.datetime.now()
+    return {"data": dt_now}
