@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 
 app = FastAPI()
 load_dotenv()
+
+# DBの情報は環境変数から取得する
 engine = sqlalchemy.create_engine("postgresql://" \
         + 'POSTGRES_USER' \
         + ":" \
