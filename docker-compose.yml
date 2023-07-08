@@ -12,6 +12,8 @@ services:
       - "8000:8000"
 
   unit_test:
+    profiles:
+      - testing
     build: ./dockerfiles/python
     depends_on:
       - db
