@@ -10,18 +10,12 @@ docker compose up
 
 サービスの再起動をする場合、以下のコマンドを使用する。
 ```bash
-docker compose down && docker compose build && docker compose up {サービス名}
-```
-
-
-## アプリを動かすとき
-```bash
-docker compose up api
+docker compose down && docker compose build && docker compose up
 ```
 
 ## 単体テストを動かすとき
 ```bash
-docker compose up unit-test
+docker compose --profile testing up
 ```
 
 # Requirement

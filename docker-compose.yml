@@ -18,7 +18,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./app:/app
+      - ./app:/app/
     command: >
       python test_discover.py
     ports:
