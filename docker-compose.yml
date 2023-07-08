@@ -3,11 +3,11 @@ services:
   api:
     build: ./dockerfiles/python
     depends_on:
-      - db
+      - postgres
     volumes:
-      - .:/code
+      - ./app:/app/
     command: >
-      uvicorn src.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+      uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
 
@@ -16,15 +16,15 @@ services:
       - testing
     build: ./dockerfiles/python
     depends_on:
-      - db
+      - postgres
     volumes:
-      - .:/code
+      - ./app:/app
     command: >
       python test_discover.py
     ports:
       - "8000:8000"
 
-  db:
+  postgres:
     image: postgres:15.3
     container_name: postgres_15
     ports:
@@ -36,6 +36,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: $api_development
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db-store:

@@ -7,10 +7,9 @@ from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer, String
 
 import datetime
-from dotenv import load_dotenv
+from api import api_router
 
 app = FastAPI()
-load_dotenv()
 
 # DBの情報は環境変数から取得する
 engine = create_engine("postgresql://" \
@@ -24,10 +23,6 @@ Base = declarative_base()
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
 
 @app.get("/now")
 def read_datetime_now():
